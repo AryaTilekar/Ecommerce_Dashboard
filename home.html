@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LiveDB Shop - Home</title>
+  <link rel="stylesheet" href="{% static 'livedb/home.css' %}">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+            <a href="{% url 'home' %}">HOME PAGE</a>
+          </li>
+          <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <a href="{% url 'dashboard' %}">DASHBOARD</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-block">
+          <div class="user-name">{{ username }}</div>
+          <div class="user-status">logged in</div>
+          <a href="{% url 'logout' %}" class="logout-btn">Log out</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content area -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="main-header">
+        <div class="header-top">
+          <span>Free Shipping worldwide for all orders over $199!</span>
+          <nav>
+            <a href="#">About us</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+          </nav>
+        </div>
+        <div class="header-bottom">
+          <div class="logo">LiveDB</div>
+          <nav class="main-nav">
+            <a href="#">Shop by Categories</a>
+            <a href="#">Shop</a>
+            <a href="#">Categories</a>
+            <a href="#">Products</a>
+            <a href="#">Top Deals</a>
+            <a href="#">Best Offers</a>
+          </nav>
+          <div class="cart-section">
+            <a href="#"><i class="fa fa-user"></i></a>
+            <a href="#"><i class="fa fa-shopping-cart"></i> (0)</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Spotlight Section -->
+      <section class="spotlight">
+        <div class="spotlight-left">
+          <h3>This Week's Highlights</h3>
+          <h1>Limited Edition For Queen Styles Fashion</h1>
+          <p>Awesome products for the dynamic urban lifestyle.</p>
+          <a href="#" class="btn-main">Shop Now</a>
+        </div>
+        <div class="spotlight-right">
+          <img src="{% static 'livedb/spotlight.jpg' %}" alt="Featured Fashion" />
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section class="category-section">
+        <h2>Best For Your Categories</h2>
+        <p>Match deals and exclusive styles tailored to modern fashion</p>
+        <div class="category-cards">
+          {% for cat in categories %}
+          <div class="category-card">
+            <img src="{{ cat.image_url }}" alt="{{ cat.name }}">
+            <span>{{ cat.name }}</span>
+            <small>{{ cat.product_count }} Products</small>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Featured Highlights -->
+      <section class="highlights-section">
+        <div class="highlight-item">
+          <img src="{% static 'livedb/highlight1.jpg' %}" alt="Highlight 1">
+          <p>Locomotive Men Blue T-Shirt</p>
+          <a href="#">Shop Now</a>
+        </div>
+        <div class="highlight-item">
+          <img src="{% static 'livedb/highlight2.jpg' %}" alt="Highlight 2">
+          <p>Soleheads Women Sneakers Shoes</p>
+          <a href="#">Shop Now</a>
+        </div>
+        <div class="highlight-item">
+          <img src="{% static 'livedb/highlight3.jpg' %}" alt="Highlight 3">
+          <p>Sisterhood Beige Small Bag</p>
+          <a href="#">Shop Now</a>
+        </div>
+      </section>
+
+      <!-- Popular Products -->
+      <section class="popular-products">
+        <h2>Popular Products</h2>
+        <div class="product-list">
+          {% for product in popular_products %}
+          <div class="product-card">
+            <img src="{{ product.image }}" alt="{{ product.title }}">
+            <div class="product-title">{{ product.title }}</div>
+            <div class="product-price">${{ product.price }}</div>
+            <a href="#" class="btn-buy">Buy Now</a>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Info Badges -->
+      <section class="info-badges">
+        <span>Worldwide Shipping</span>
+        <span>Money Back Guarantee</span>
+        <span>Offers and Discounts</span>
+        <span>24/7 Support Services</span>
+      </section>
+
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>E-commerce Analytics Dashboard</title>
+  <link rel="stylesheet" href="{% static 'livedb/dashboard.css' %}">
+</head>
+<body>
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+    <aside class="sidebar">
+  <nav>
+    <ul>
+      <li class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+        <a href="{% url 'home' %}">HOME PAGE</a>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+        <a href="{% url 'dashboard' %}">DASHBOARD</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="sidebar-user">
+    <div class="user-block">
+      <div class="user-name">{{ username }}</div>
+      <div class="user-status">logged in</div>
+      <a href="{% url 'logout' %}" class="logout-btn">Log out</a>
+    </div>
+  </div>
+</aside>
+
+
+
+  <!-- Main dashboard area -->
+  <main class="dashboard-main">
+    <div class="dashboard-bar">
+      <div class="card metric-card">
+        <h4>Total Products</h4>
+        <span>{{ total_products }}</span>
+      </div>
+      <div class="card metric-card blue">
+        <h4>Total Orders</h4>
+        <span>{{ total_orders }}</span>
+      </div>
+      <div class="card metric-card green">
+        <h4>Total Revenue</h4>
+        <span>${{ total_revenue }}</span>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <h4>Top 5 Expensive Products</h4>
+      <table>
+        <thead>
+          <tr><th>Product</th><th>Category</th><th>Price ($)</th></tr>
+        </thead>
+        <tbody>
+          {% for p in top_products %}
+          <tr>
+            <td>{{ p.title }}</td>
+            <td>{{ p.category }}</td>
+            <td>{{ p.price }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card table-card">
+      <h4>All Products (First 10)</h4>
+      <table>
+        <thead>
+          <tr><th>Product</th><th>Category</th><th>Price ($)</th></tr>
+        </thead>
+        <tbody>
+          {% for p in products|slice:":10" %}
+          <tr>
+            <td>{{ p.title }}</td>
+            <td>{{ p.category }}</td>
+            <td>{{ p.price }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card table-card">
+      <h4>Products By Category</h4>
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Product</th><th>Price ($)</th></tr>
+        </thead>
+        <tbody>
+          {% regroup products by category as category_list %}
+          {% for category in category_list %}
+            <tr>
+              <td rowspan="{{ category.list|length }}">{{ category.grouper }}</td>
+              <td>{{ category.list.0.title }}</td>
+              <td>{{ category.list.0.price }}</td>
+            </tr>
+            {% for item in category.list|slice:"1:" %}
+              <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.price }}</td>
+              </tr>
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+</body>
+</html>
